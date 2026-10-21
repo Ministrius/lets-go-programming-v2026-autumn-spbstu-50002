@@ -5,27 +5,28 @@ import (
 )
 
 func main() {
-	var n, k, temperature int
-	var Symbol string
+	var departmentsCount, employeesCount, temperature int
 
-	if _, err := fmt.Scan(&n); err != nil {
+	var symbol string
+
+	if _, err := fmt.Scan(&departmentsCount); err != nil {
 		return
 	}
 
-	for range n {
-		if _, err := fmt.Scan(&k); err != nil {
+	for range departmentsCount {
+		if _, err := fmt.Scan(&employeesCount); err != nil {
 			return
 		}
 
 		minT := 15
 		maxT := 30
 
-		for range k {
-			if _, err := fmt.Scan(&Symbol, &temperature); err != nil {
+		for range employeesCount {
+			if _, err := fmt.Scan(&symbol, &temperature); err != nil {
 				return
 			}
 
-			switch Symbol {
+			switch symbol {
 			case "<=":
 				if temperature < maxT {
 					maxT = temperature
