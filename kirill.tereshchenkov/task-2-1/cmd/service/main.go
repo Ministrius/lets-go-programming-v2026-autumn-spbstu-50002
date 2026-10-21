@@ -5,8 +5,8 @@ import (
 )
 
 func main() {
-	var n, k, t int
-	var tp string
+	var n, k, temperature int
+	var Symbol string
 
 	if _, err := fmt.Scan(&n); err != nil {
 		return
@@ -21,18 +21,18 @@ func main() {
 		maxT := 30
 
 		for range k {
-			if _, err := fmt.Scan(&tp, &t); err != nil {
+			if _, err := fmt.Scan(&Symbol, &temperature); err != nil {
 				return
 			}
 
-			switch tp {
+			switch Symbol {
 			case "<=":
-				if t < maxT {
-					maxT = t
+				if temperature < maxT {
+					maxT = temperature
 				}
 			case ">=":
-				if t > minT {
-					minT = t
+				if temperature > minT {
+					minT = temperature
 				}
 			default:
 				fmt.Print("Wrong symbol\n")
