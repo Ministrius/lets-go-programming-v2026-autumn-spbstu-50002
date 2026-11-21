@@ -3,7 +3,6 @@ package currency
 import (
 	"bytes"
 	"encoding/xml"
-	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -11,8 +10,6 @@ import (
 
 	"golang.org/x/net/html/charset"
 )
-
-var errInvalidCurrencyData = errors.New("invalid currency data")
 
 type xmlDocument struct {
 	XMLName xml.Name    `xml:"ValCurs"`
@@ -25,7 +22,6 @@ type xmlValute struct {
 	Value    string `xml:"Value"`
 }
 
-// ParseXML читает XML-файл и преобразует его в срез валют.
 func ParseXML(path string) ([]Currency, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -44,12 +40,8 @@ func ParseXML(path string) ([]Currency, error) {
 
 	currencies := make([]Currency, 0, len(document.Valutes))
 
-	for i, valute := range document.Valutes {
+	for _, valute := range document.Valutes {
 		charCode := strings.TrimSpace(valute.CharCode)
-
-		if valute.NumCode <= 0 || charCode == "" {
-			return nil, fmt.Errorf("%w at index %d", errInvalidCurrencyData, i)
-		}
 
 		rawValue := strings.ReplaceAll(
 			strings.TrimSpace(valute.Value),
