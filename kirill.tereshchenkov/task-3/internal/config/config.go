@@ -2,6 +2,7 @@ package config
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -9,11 +10,18 @@ import (
 	"go.yaml.in/yaml/v3"
 )
 
+var (
+	errInputFileEmpty  = errors.New("input-file is empty")
+	errOutputFileEmpty = errors.New("output-file is empty")
+)
+
+// Config содержит настройки приложения.
 type Config struct {
 	InputFile  string `yaml:"input-file"`
 	OutputFile string `yaml:"output-file"`
 }
 
+// Load загружает конфигурацию из YAML-файла.
 func Load(path string) (Config, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -21,6 +29,7 @@ func Load(path string) (Config, error) {
 	}
 
 	var cfg Config
+
 	decoder := yaml.NewDecoder(bytes.NewReader(data))
 	decoder.KnownFields(true)
 
@@ -33,11 +42,11 @@ func Load(path string) (Config, error) {
 	cfg.OutputFile = strings.TrimSpace(cfg.OutputFile)
 
 	if cfg.InputFile == "" {
-		return Config{}, fmt.Errorf("input-file is empty")
+		return Config{}, errInputFileEmpty
 	}
 
 	if cfg.OutputFile == "" {
-		return Config{}, fmt.Errorf("output-file is empty")
+		return Config{}, errOutputFileEmpty
 	}
 
 	return cfg, nil
